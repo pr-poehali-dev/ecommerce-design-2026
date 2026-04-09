@@ -54,7 +54,7 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'glass-dark shadow-lg shadow-black/20' : 'bg-transparent'
+        scrolled ? 'glass-dark shadow-lg shadow-slate-200/60' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -93,8 +93,8 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
               onClick={() => onNavigate(link.id)}
               className={`px-4 py-2 rounded-pill text-sm font-medium transition-all duration-200 ${
                 currentPage === link.id
-                  ? 'text-white bg-white/10'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  ? 'text-cyber-blue bg-cyber-blue/10'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
               }`}
             >
               {link.label}
@@ -105,14 +105,14 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
         {/* Search bar desktop */}
         <form
           onSubmit={handleSearch}
-          className={`hidden md:flex items-center flex-1 max-w-sm glass rounded-pill px-4 h-10 gap-2 transition-all duration-300 focus-within:border-cyber-blue/40 focus-within:shadow-[0_0_0_2px_rgba(42,109,244,0.2)]`}
+          className="hidden md:flex items-center flex-1 max-w-sm bg-white border border-slate-200 rounded-pill px-4 h-10 gap-2 transition-all duration-300 focus-within:border-cyber-blue/50 focus-within:shadow-[0_0_0_3px_rgba(42,109,244,0.12)] shadow-sm"
         >
-          <Icon name="Search" size={16} className="text-white/40 flex-shrink-0" />
+          <Icon name="Search" size={16} className="text-slate-400 flex-shrink-0" />
           <input
             value={searchVal}
             onChange={e => setSearchVal(e.target.value)}
             placeholder="Поиск товаров..."
-            className="bg-transparent text-sm text-white placeholder:text-white/30 outline-none flex-1 min-w-0"
+            className="bg-transparent text-sm text-slate-700 placeholder:text-slate-300 outline-none flex-1 min-w-0"
           />
         </form>
 
@@ -121,7 +121,7 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
           {/* Search mobile */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
-            className="md:hidden w-10 h-10 glass rounded-pill flex items-center justify-center text-white/60 hover:text-white transition-colors"
+            className="md:hidden w-10 h-10 bg-white border border-slate-200 rounded-pill flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors shadow-sm"
           >
             <Icon name="Search" size={18} />
           </button>
@@ -129,7 +129,7 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
           {/* Auth button */}
           <button
             onClick={isLoggedIn ? () => onNavigate('profile') : onAuthOpen}
-            className="hidden sm:flex items-center gap-2 glass rounded-pill px-4 h-10 text-sm font-medium text-white/80 hover:text-white transition-all duration-200 hover:bg-white/10"
+            className="hidden sm:flex items-center gap-2 bg-white border border-slate-200 rounded-pill px-4 h-10 text-sm font-medium text-slate-600 hover:text-slate-900 hover:border-cyber-blue/30 transition-all duration-200 shadow-sm hover:shadow-md"
           >
             <Icon name="User" size={16} />
             <span>{isLoggedIn ? (userName?.split(' ')[0] || 'Профиль') : 'Войти'}</span>
@@ -138,7 +138,7 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
           {/* Mobile profile */}
           <button
             onClick={isLoggedIn ? () => onNavigate('profile') : onAuthOpen}
-            className="sm:hidden w-10 h-10 glass rounded-pill flex items-center justify-center text-white/60 hover:text-white transition-colors"
+            className="sm:hidden w-10 h-10 bg-white border border-slate-200 rounded-pill flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors shadow-sm"
           >
             <Icon name="User" size={18} />
           </button>
@@ -146,12 +146,12 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
           {/* Cart */}
           <button
             onClick={onCartOpen}
-            className="relative w-10 h-10 btn-gradient rounded-pill flex items-center justify-center text-white transition-all duration-200 hover:shadow-[0_0_20px_rgba(42,109,244,0.5)]"
+            className="relative w-10 h-10 btn-gradient rounded-pill flex items-center justify-center text-white transition-all duration-200 shadow-md shadow-cyber-blue/25 hover:shadow-lg hover:shadow-cyber-blue/30"
           >
             <Icon name="ShoppingCart" size={18} />
             {cartCount > 0 && (
               <span
-                className={`absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-white text-cyber-dark text-[10px] font-bold rounded-full flex items-center justify-center px-1 ${
+                className={`absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-white text-cyber-blue text-[10px] font-bold rounded-full flex items-center justify-center px-1 shadow-sm ${
                   badgeBounce ? 'animate-badge-bounce' : ''
                 }`}
               >
@@ -167,18 +167,18 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
         <div className="md:hidden px-4 pb-3 animate-fade-in">
           <form
             onSubmit={handleSearch}
-            className="flex items-center glass rounded-pill px-4 h-11 gap-2"
+            className="flex items-center bg-white border border-slate-200 rounded-pill px-4 h-11 gap-2 shadow-sm"
           >
-            <Icon name="Search" size={16} className="text-white/40 flex-shrink-0" />
+            <Icon name="Search" size={16} className="text-slate-400 flex-shrink-0" />
             <input
               ref={searchRef}
               value={searchVal}
               onChange={e => setSearchVal(e.target.value)}
               placeholder="Поиск товаров..."
-              className="bg-transparent text-sm text-white placeholder:text-white/30 outline-none flex-1"
+              className="bg-transparent text-sm text-slate-700 placeholder:text-slate-300 outline-none flex-1"
             />
             <button type="button" onClick={() => setSearchOpen(false)}>
-              <Icon name="X" size={16} className="text-white/40 hover:text-white" />
+              <Icon name="X" size={16} className="text-slate-400 hover:text-slate-700" />
             </button>
           </form>
         </div>

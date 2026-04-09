@@ -100,7 +100,7 @@ export default function Index() {
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-deep)' }}>
+    <div className="min-h-screen" style={{ background: '#F0F4FF' }}>
       <Header
         cartCount={cartCount}
         onCartOpen={() => setCartOpen(true)}
@@ -158,7 +158,7 @@ export default function Index() {
       </main>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 md:hidden z-30 glass-dark border-t border-white/6">
+      <nav className="fixed bottom-0 left-0 right-0 md:hidden z-30 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(15,23,42,0.06)]">
         <div className="flex">
           {NAV_ITEMS.map(item => {
             const isActive = item.id !== 'cart' && page === item.id;
@@ -169,8 +169,8 @@ export default function Index() {
                   if (item.id === 'cart') setCartOpen(true);
                   else navigate(item.id);
                 }}
-                className={`flex-1 flex flex-col items-center justify-center py-3 gap-0.5 transition-colors ${
-                  isActive ? 'text-cyber-blue' : 'text-white/30 hover:text-white/60'
+                className={`flex-1 flex flex-col items-center justify-center py-3 gap-0.5 transition-all duration-200 ${
+                  isActive ? 'text-cyber-blue' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
                 <div className="relative">

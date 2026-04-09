@@ -49,45 +49,52 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
         className="relative min-h-[100svh] flex flex-col items-center justify-center px-4 overflow-hidden"
         onMouseMove={handleMouseMove}
       >
-        {/* Dynamic gradient */}
+        {/* Hero grid */}
+        <div className="absolute inset-0 hero-grid pointer-events-none opacity-60" />
+
+        {/* Animated orbs */}
         <div
-          className="absolute inset-0 opacity-30 pointer-events-none transition-all duration-700"
+          className="absolute top-1/4 left-1/5 w-72 h-72 rounded-full blur-[100px] pointer-events-none animate-float"
+          style={{ background: 'rgba(42,109,244,0.15)', animationDelay: '0s' }}
+        />
+        <div
+          className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full blur-[120px] pointer-events-none animate-float"
+          style={{ background: 'rgba(138,43,226,0.1)', animationDelay: '2s' }}
+        />
+        <div
+          className="absolute top-2/3 left-1/2 w-56 h-56 rounded-full blur-[80px] pointer-events-none animate-float"
+          style={{ background: 'rgba(42,109,244,0.08)', animationDelay: '1s' }}
+        />
+
+        {/* Mouse-follow glow */}
+        <div
+          className="absolute inset-0 pointer-events-none transition-all duration-700"
           style={{
-            background: `radial-gradient(ellipse 60% 50% at ${mousePos.x}% ${mousePos.y}%, rgba(42,109,244,0.35) 0%, transparent 70%)`,
+            background: `radial-gradient(ellipse 40% 40% at ${mousePos.x}% ${mousePos.y}%, rgba(42,109,244,0.12) 0%, transparent 70%)`,
           }}
         />
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-        {/* Glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-10 blur-[80px] pointer-events-none"
-          style={{ background: '#2A6DF4' }} />
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full opacity-8 blur-[100px] pointer-events-none"
-          style={{ background: '#8A2BE2' }} />
 
         <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 badge-trust px-4 py-1.5 animate-fade-in">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+          {/* Badge with pulse ring */}
+          <div className="relative inline-flex items-center gap-2 badge-trust px-4 py-1.5 animate-pop-in shadow-sm">
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inline-flex w-full h-full rounded-full bg-green-400 animate-pulse-ring opacity-75" />
+              <span className="relative w-2 h-2 rounded-full bg-green-500" />
+            </span>
             <span>Мгновенная выдача · Более 500 товаров</span>
           </div>
 
           {/* Headline */}
           <h1
-            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white font-bold leading-none tracking-tight animate-fade-in"
-            style={{ animationDelay: '0.1s' }}
+            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-none tracking-tight animate-fade-in"
+            style={{ color: '#0F172A', animationDelay: '0.1s' }}
           >
             BYTE<span className="text-gradient">BAY</span><br />
-            <span className="text-white/50 text-3xl sm:text-4xl font-medium tracking-normal" style={{ fontFamily: 'Golos Text' }}>цифровой маркетплейс</span>
+            <span className="text-slate-400 text-3xl sm:text-4xl font-medium tracking-normal" style={{ fontFamily: 'Golos Text' }}>цифровой маркетплейс</span>
           </h1>
 
           <p
-            className="text-white/45 text-lg sm:text-xl max-w-xl mx-auto leading-relaxed animate-fade-in"
+            className="text-slate-500 text-lg sm:text-xl max-w-xl mx-auto leading-relaxed animate-fade-in"
             style={{ animationDelay: '0.2s' }}
           >
             Лицензионное ПО, ключи активации и подписки. <br className="hidden sm:block" />
@@ -100,64 +107,65 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
             className="animate-fade-in flex"
             style={{ animationDelay: '0.3s' }}
           >
-            <div className="relative flex items-center w-full max-w-xl mx-auto">
-              <Icon name="Search" size={20} className="absolute left-5 text-white/30 pointer-events-none" />
+            <div className="relative flex items-center w-full max-w-xl mx-auto group">
+              <Icon name="Search" size={20} className="absolute left-5 text-slate-400 pointer-events-none transition-colors group-focus-within:text-cyber-blue" />
               <input
                 value={searchVal}
                 onChange={e => setSearchVal(e.target.value)}
                 placeholder="Поиск: Adobe, Windows, Kaspersky..."
-                className="w-full glass rounded-pill h-14 pl-14 pr-36 text-base text-white placeholder:text-white/25 outline-none focus:shadow-[0_0_0_2px_rgba(42,109,244,0.4)] transition-all duration-200"
+                className="w-full bg-white border border-slate-200 rounded-pill h-14 pl-14 pr-36 text-base text-slate-700 placeholder:text-slate-300 outline-none focus:border-cyber-blue/40 focus:shadow-[0_0_0_4px_rgba(42,109,244,0.1)] transition-all duration-300 shadow-md"
               />
               <button
                 type="submit"
-                className="absolute right-2 btn-gradient h-10 px-6 rounded-pill text-white text-sm font-semibold"
+                className="absolute right-2 btn-gradient h-10 px-6 rounded-pill text-white text-sm font-semibold ripple-btn shadow-md"
               >
                 Найти
               </button>
             </div>
           </form>
 
-          {/* Stats */}
-          <div
-            className="flex items-center justify-center gap-8 animate-fade-in"
-            style={{ animationDelay: '0.4s' }}
-          >
+          {/* Stats with pop-in */}
+          <div className="flex items-center justify-center gap-6 sm:gap-10">
             {[
-              { value: '50 000+', label: 'покупателей' },
-              { value: '500+', label: 'товаров' },
-              { value: '4.9', label: 'рейтинг' },
+              { value: '50 000+', label: 'покупателей', delay: '0.4s' },
+              { value: '500+', label: 'товаров', delay: '0.5s' },
+              { value: '4.9 ★', label: 'рейтинг', delay: '0.6s' },
             ].map(stat => (
-              <div key={stat.label} className="text-center">
-                <div className="font-mono text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-white/35 text-xs mt-0.5">{stat.label}</div>
+              <div key={stat.label} className="text-center animate-pop-in" style={{ animationDelay: stat.delay }}>
+                <div className="font-mono text-xl sm:text-2xl font-bold text-slate-800">{stat.value}</div>
+                <div className="text-slate-400 text-xs mt-0.5">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/20 animate-bounce">
-          <Icon name="ChevronDown" size={20} />
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-400 animate-bounce">
+          <Icon name="ChevronDown" size={22} />
         </div>
       </section>
 
       {/* Bento categories */}
       <section className="px-4 sm:px-6 py-16 max-w-7xl mx-auto">
-        <h2 className="font-heading text-3xl sm:text-4xl text-white font-bold tracking-tight mb-8">
+        <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight mb-2" style={{ color: '#0F172A' }}>
           КАТЕГОРИИ
         </h2>
+        <p className="text-slate-400 text-sm mb-8">Выберите нужный раздел</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {BENTO_CATEGORIES.map((cat, i) => (
             <button
               key={cat.name}
               onClick={() => { onSearch(cat.name === 'Все' ? '' : cat.name); onNavigate('catalog'); }}
-              className="stagger-item glass rounded-2xl p-4 flex flex-col items-start gap-3 hover:bg-white/8 transition-all duration-200 hover:scale-[1.02] text-left group"
+              className="stagger-item bg-white rounded-2xl p-4 flex flex-col items-start gap-3 border border-slate-100 shadow-sm hover:shadow-md hover:border-cyber-blue/20 transition-all duration-300 hover:scale-[1.03] text-left group"
               style={{ animationDelay: `${i * 0.06}s` }}
             >
-              <span className="text-3xl">{cat.icon}</span>
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3"
+                style={{ background: 'linear-gradient(135deg, #EEF4FF 0%, #F3EEFF 100%)' }}>
+                {cat.icon}
+              </div>
               <div>
-                <p className="text-white font-medium text-sm">{cat.name}</p>
-                <p className="text-white/30 text-xs">{cat.count} товар{cat.count === 1 ? '' : cat.count < 5 ? 'а' : 'ов'}</p>
+                <p className="text-slate-700 font-semibold text-sm group-hover:text-cyber-blue transition-colors">{cat.name}</p>
+                <p className="text-slate-400 text-xs">{cat.count} товар{cat.count === 1 ? '' : cat.count < 5 ? 'а' : 'ов'}</p>
               </div>
             </button>
           ))}
@@ -167,12 +175,15 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
       {/* Hits */}
       <section className="px-4 sm:px-6 py-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="font-heading text-3xl sm:text-4xl text-white font-bold tracking-tight">
-            🔥 ХИТЫ ПРОДАЖ
-          </h2>
+          <div>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: '#0F172A' }}>
+              🔥 ХИТЫ ПРОДАЖ
+            </h2>
+            <p className="text-slate-400 text-sm mt-1">Самые популярные товары</p>
+          </div>
           <button
             onClick={() => onNavigate('catalog')}
-            className="text-sm text-cyber-blue/70 hover:text-cyber-blue flex items-center gap-1 transition-colors"
+            className="text-sm text-cyber-blue hover:text-cyber-purple flex items-center gap-1 transition-colors font-medium"
           >
             Все <Icon name="ChevronRight" size={14} />
           </button>
@@ -190,12 +201,15 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
       {/* New items */}
       <section className="px-4 sm:px-6 py-8 pb-24 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="font-heading text-3xl sm:text-4xl text-white font-bold tracking-tight">
-            ✨ НОВИНКИ
-          </h2>
+          <div>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: '#0F172A' }}>
+              ✨ НОВИНКИ
+            </h2>
+            <p className="text-slate-400 text-sm mt-1">Только что появились</p>
+          </div>
           <button
             onClick={() => onNavigate('catalog')}
-            className="text-sm text-cyber-blue/70 hover:text-cyber-blue flex items-center gap-1 transition-colors"
+            className="text-sm text-cyber-blue hover:text-cyber-purple flex items-center gap-1 transition-colors font-medium"
           >
             Все <Icon name="ChevronRight" size={14} />
           </button>
@@ -211,7 +225,7 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/6 px-4 sm:px-6 py-8 max-w-7xl mx-auto">
+      <footer className="border-t border-slate-100 bg-white px-4 sm:px-6 py-8 max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg btn-gradient flex items-center justify-center">
@@ -221,16 +235,16 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
                 <path d="M4 10.5C4 10.5 4 14.5 10 14.5C16 14.5 16 10.5 16 10.5" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
               </svg>
             </div>
-            <span className="font-heading text-white/60 font-bold text-sm tracking-tight">
+            <span className="font-heading text-slate-600 font-bold text-sm tracking-tight">
               Byte<span className="text-gradient">Bay</span>
             </span>
           </div>
-          <div className="flex gap-4 text-xs text-white/25">
-            <span className="hover:text-white/50 cursor-pointer transition-colors">Публичная оферта</span>
-            <span className="hover:text-white/50 cursor-pointer transition-colors">Политика конфиденциальности</span>
-            <span className="hover:text-white/50 cursor-pointer transition-colors">Поддержка</span>
+          <div className="flex gap-4 text-xs text-slate-400">
+            <span className="hover:text-slate-600 cursor-pointer transition-colors">Публичная оферта</span>
+            <span className="hover:text-slate-600 cursor-pointer transition-colors">Политика конфиденциальности</span>
+            <span className="hover:text-slate-600 cursor-pointer transition-colors">Поддержка</span>
           </div>
-          <p className="text-white/20 text-xs">© 2026 ByteBay</p>
+          <p className="text-slate-300 text-xs">© 2026 ByteBay</p>
         </div>
       </footer>
     </div>
