@@ -8,6 +8,7 @@ interface CatalogPageProps {
   onAddToCart: (product: Product, event: React.MouseEvent) => void;
   onProductClick: (product: Product) => void;
   initialSearch?: string;
+  extraProducts?: Product[];
 }
 
 const SORT_OPTIONS = [
@@ -20,7 +21,7 @@ const SORT_OPTIONS = [
 
 const MAX_PRICE = 6000;
 
-export default function CatalogPage({ onAddToCart, onProductClick, initialSearch = '' }: CatalogPageProps) {
+export default function CatalogPage({ onAddToCart, onProductClick, initialSearch = '', extraProducts = [] }: CatalogPageProps) {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState('Все');
@@ -38,7 +39,9 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
     return () => clearTimeout(t);
   }, []);
 
-  const filtered = PRODUCTS
+  const allProducts = [...PRODUCTS, ...extraProducts];
+
+  const filtered = allProducts
     .filter(p => {
       const matchCat = category === 'Все' || p.category === category;
       const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase());

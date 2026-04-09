@@ -63,12 +63,26 @@ export default function Header({ cartCount, onCartOpen, onAuthOpen, isLoggedIn, 
           onClick={() => onNavigate('home')}
           className="flex items-center gap-2 flex-shrink-0"
         >
-          <div className="w-8 h-8 rounded-lg btn-gradient flex items-center justify-center text-base">
-            ⚡
+          <div className="flex items-center gap-2.5">
+            {/* Anchor icon */}
+            <div className="relative w-9 h-9 flex-shrink-0">
+              <div className="absolute inset-0 rounded-xl btn-gradient opacity-90" />
+              <div className="absolute inset-0 rounded-xl flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="5" r="2.5" stroke="white" strokeWidth="1.8"/>
+                  <path d="M10 7.5V17M10 17L6 13.5M10 17L14 13.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M4 10.5C4 10.5 4 14.5 10 14.5C16 14.5 16 10.5 16 10.5" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+              </div>
+            </div>
+            {/* Wordmark */}
+            <div className="hidden sm:flex flex-col leading-none">
+              <span className="font-heading font-bold text-[1.35rem] tracking-[-0.03em] text-white leading-none">
+                Byte<span className="text-gradient">Bay</span>
+              </span>
+              <span className="text-[9px] text-white/25 font-mono tracking-[0.18em] uppercase leading-none mt-0.5">Digital Market</span>
+            </div>
           </div>
-          <span className="font-heading text-white font-bold text-lg tracking-tight hidden sm:block">
-            DIGITAL<span className="text-gradient">STORE</span>
-          </span>
         </button>
 
         {/* Nav */}

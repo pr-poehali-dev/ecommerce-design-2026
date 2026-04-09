@@ -82,8 +82,8 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
             className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white font-bold leading-none tracking-tight animate-fade-in"
             style={{ animationDelay: '0.1s' }}
           >
-            ЦИФРОВЫЕ<br />
-            <span className="text-gradient">ТОВАРЫ</span>
+            BYTE<span className="text-gradient">BAY</span><br />
+            <span className="text-white/50 text-3xl sm:text-4xl font-medium tracking-normal" style={{ fontFamily: 'Golos Text' }}>цифровой маркетплейс</span>
           </h1>
 
           <p
@@ -214,9 +214,15 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
       <footer className="border-t border-white/6 px-4 sm:px-6 py-8 max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xl">⚡</span>
+            <div className="w-7 h-7 rounded-lg btn-gradient flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="5" r="2.5" stroke="white" strokeWidth="1.8"/>
+                <path d="M10 7.5V17M10 17L6 13.5M10 17L14 13.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 10.5C4 10.5 4 14.5 10 14.5C16 14.5 16 10.5 16 10.5" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
+            </div>
             <span className="font-heading text-white/60 font-bold text-sm tracking-tight">
-              DIGITAL<span className="text-gradient">STORE</span>
+              Byte<span className="text-gradient">Bay</span>
             </span>
           </div>
           <div className="flex gap-4 text-xs text-white/25">
@@ -224,7 +230,7 @@ export default function HomePage({ onAddToCart, onProductClick, onNavigate, onSe
             <span className="hover:text-white/50 cursor-pointer transition-colors">Политика конфиденциальности</span>
             <span className="hover:text-white/50 cursor-pointer transition-colors">Поддержка</span>
           </div>
-          <p className="text-white/20 text-xs">© 2026 DigitalStore</p>
+          <p className="text-white/20 text-xs">© 2026 ByteBay</p>
         </div>
       </footer>
     </div>

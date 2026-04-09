@@ -2,31 +2,37 @@ import { useState, useCallback } from 'react';
 import Header from '@/components/Header';
 import CartDrawer from '@/components/CartDrawer';
 import AuthModal from '@/components/AuthModal';
+import TopupModal from '@/components/TopupModal';
 import HomePage from '@/pages/HomePage';
 import CatalogPage from '@/pages/CatalogPage';
 import ProductPage from '@/pages/ProductPage';
 import ProfilePage from '@/pages/ProfilePage';
+import SellPage from '@/pages/SellPage';
 import Icon from '@/components/ui/icon';
-import { Product, CartItem, User } from '@/store/useStore';
+import { Product, CartItem, User, PRODUCTS } from '@/store/useStore';
 
-type Page = 'home' | 'catalog' | 'product' | 'profile';
+type Page = 'home' | 'catalog' | 'product' | 'profile' | 'sell';
 
 export default function Index() {
   const [page, setPage] = useState<Page>('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [topupOpen, setTopupOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [extraProducts, setExtraProducts] = useState<Product[]>([]);
+
+  const allProducts = [...PRODUCTS, ...extraProducts];
 
   const navigate = useCallback((target: string, data?: unknown) => {
     if (target === 'product' && data) {
       setSelectedProduct(data as Product);
       setPage('product');
-    } else if (target === 'profile') {
+    } else if (target === 'profile' || target === 'sell') {
       if (!user) { setAuthOpen(true); return; }
-      setPage('profile');
+      setPage(target as Page);
     } else {
       setPage(target as Page);
     }
@@ -70,6 +76,20 @@ export default function Index() {
     setCartOpen(true);
   }, [handleAddToCart]);
 
+  const handleTopup = useCallback((amount: number, method: 'sbp' | 'card') => {
+    setUser(prev => prev ? { ...prev, balance: prev.balance + amount } : prev);
+  }, []);
+
+  const handlePublishProduct = useCallback((product: Product) => {
+    setExtraProducts(prev => [...prev, product]);
+    setUser(prev => prev ? { ...prev, myProducts: [...prev.myProducts, product] } : prev);
+  }, []);
+
+  const handleDeleteMyProduct = useCallback((id: number) => {
+    setExtraProducts(prev => prev.filter(p => p.id !== id));
+    setUser(prev => prev ? { ...prev, myProducts: prev.myProducts.filter(p => p.id !== id) } : prev);
+  }, []);
+
   const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   const NAV_ITEMS = [
@@ -106,6 +126,7 @@ export default function Index() {
             onAddToCart={handleAddToCart}
             onProductClick={handleProductClick}
             initialSearch={searchQuery}
+            extraProducts={extraProducts}
           />
         )}
         {page === 'product' && selectedProduct && (
@@ -121,6 +142,16 @@ export default function Index() {
           <ProfilePage
             user={user}
             onLogout={() => { setUser(null); setPage('home'); }}
+            onNavigate={navigate}
+            onTopupOpen={() => setTopupOpen(true)}
+            onSell={() => navigate('sell')}
+            onDeleteProduct={handleDeleteMyProduct}
+          />
+        )}
+        {page === 'sell' && user && (
+          <SellPage
+            user={user}
+            onPublish={handlePublishProduct}
             onNavigate={navigate}
           />
         )}
@@ -171,6 +202,15 @@ export default function Index() {
         onClose={() => setAuthOpen(false)}
         onLogin={setUser}
       />
+
+      {user && (
+        <TopupModal
+          open={topupOpen}
+          onClose={() => setTopupOpen(false)}
+          currentBalance={user.balance}
+          onTopup={handleTopup}
+        />
+      )}
     </div>
   );
 }

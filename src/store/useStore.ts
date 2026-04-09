@@ -14,6 +14,8 @@ export interface Product {
   features: string[];
   isNew?: boolean;
   isHit?: boolean;
+  sellerId?: number;
+  sellerName?: string;
 }
 
 export interface CartItem extends Product {
@@ -26,6 +28,16 @@ export interface User {
   email: string;
   avatar: string;
   orders: Order[];
+  balance: number;
+  myProducts: Product[];
+}
+
+export interface TopupTransaction {
+  id: string;
+  date: string;
+  amount: number;
+  method: 'sbp' | 'card';
+  status: 'completed' | 'pending';
 }
 
 export interface Order {
@@ -111,6 +123,8 @@ export const MOCK_USER: User = {
   name: 'Алексей Смирнов',
   email: 'a.smirnov@gmail.com',
   avatar: 'АС',
+  balance: 3500,
+  myProducts: [],
   orders: [
     {
       id: 'DS-2026-0042',
