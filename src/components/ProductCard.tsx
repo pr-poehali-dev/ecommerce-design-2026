@@ -9,116 +9,172 @@ interface ProductCardProps {
   onClick: (product: Product) => void;
 }
 
+const NEON_COLORS = [
+  { r: '255,45,155',  label: 'pink'   },
+  { r: '0,212,255',   label: 'cyan'   },
+  { r: '157,78,221',  label: 'violet' },
+  { r: '0,255,148',   label: 'green'  },
+];
+
 export default function ProductCard({ product, index, onAddToCart, onClick }: ProductCardProps) {
   const [added, setAdded] = useState(false);
-  const [ripple, setRipple] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  const c = NEON_COLORS[product.id % NEON_COLORS.length];
+  const border  = `rgba(${c.r}, 0.65)`;
+  const glow    = `rgba(${c.r}, 0.35)`;
+  const soft    = `rgba(${c.r}, 0.08)`;
+  const discount = product.oldPrice ? Math.round((1 - product.price / product.oldPrice) * 100) : null;
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
     setAdded(true);
-    setRipple(true);
     onAddToCart(product, e);
-    setTimeout(() => setAdded(false), 1200);
-    setTimeout(() => setRipple(false), 600);
+    setTimeout(() => setAdded(false), 1400);
   };
-
-  const discount = product.oldPrice
-    ? Math.round((1 - product.price / product.oldPrice) * 100)
-    : null;
 
   return (
     <div
       onClick={() => onClick(product)}
-      className="stagger-item card-hover bg-white rounded-2xl overflow-hidden cursor-pointer group border border-slate-100 shadow-sm"
-      style={{ animationDelay: `${index * 0.05}s` }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="stagger-item rounded-2xl overflow-hidden cursor-pointer group relative"
+      style={{
+        animationDelay: `${index * 0.07}s`,
+        background: '#0A0A0F',
+        border: `1px solid ${hovered ? border : 'rgba(255,255,255,0.07)'}`,
+        boxShadow: hovered
+          ? `0 0 0 1px ${border}, 0 0 30px ${glow}, 0 0 80px rgba(${c.r},0.1), 0 24px 60px rgba(0,0,0,0.7)`
+          : '0 2px 16px rgba(0,0,0,0.4)',
+        transform: hovered ? 'translateY(-10px) scale(1.025)' : 'none',
+        transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
+      }}
     >
-      {/* Icon area */}
-      <div className="relative h-44 flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #EEF4FF 0%, #F3EEFF 100%)' }}>
-        {/* Animated blobs */}
+      {/* Scan line */}
+      {hovered && (
+        <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden rounded-2xl">
+          <div
+            className="absolute left-0 right-0 h-px animate-scan"
+            style={{ background: `linear-gradient(90deg, transparent, ${border}, transparent)` }}
+          />
+        </div>
+      )}
+
+      {/* Icon zone */}
+      <div
+        className="relative h-48 flex items-center justify-center overflow-hidden"
+        style={{ background: `radial-gradient(ellipse at 50% 60%, ${soft} 0%, transparent 70%)` }}
+      >
+        <div className="absolute inset-0 cyber-grid-sm opacity-40" />
+
+        {/* Glow on hover */}
         <div
-          className="absolute w-32 h-32 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-all duration-500 group-hover:scale-110"
-          style={{ background: '#2A6DF4', top: '-10%', right: '10%' }}
-        />
-        <div
-          className="absolute w-24 h-24 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-700"
-          style={{ background: '#8A2BE2', bottom: '-5%', left: '5%' }}
+          className="absolute inset-0 transition-opacity duration-500"
+          style={{
+            opacity: hovered ? 1 : 0,
+            background: `radial-gradient(circle at 50% 50%, ${glow} 0%, transparent 65%)`,
+          }}
         />
 
-        {/* Icon with float animation on hover */}
+        {/* Icon */}
         <span
-          className="text-6xl relative z-10 select-none transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2 drop-shadow-lg"
+          className="text-7xl relative z-10 select-none transition-all duration-500"
+          style={{
+            transform: hovered ? 'scale(1.25) translateY(-10px)' : 'scale(1)',
+            filter: hovered
+              ? `drop-shadow(0 0 12px ${border}) drop-shadow(0 0 28px ${glow})`
+              : 'none',
+          }}
         >
           {product.icon}
         </span>
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-20">
           {product.badge && (
-            <span className="badge-trust text-xs px-2.5 py-1 animate-pop-in">{product.badge}</span>
+            <span className="text-xs px-2.5 py-1 rounded-pill font-bold"
+              style={{ background: soft, border: `1px solid ${border}`, color: `rgba(${c.r},1)`, textShadow: `0 0 8px ${glow}` }}>
+              {product.badge}
+            </span>
           )}
           {product.isNew && !product.badge && (
-            <span className="text-xs px-2.5 py-1 rounded-pill font-semibold"
-              style={{ background: 'rgba(138,43,226,0.1)', border: '1px solid rgba(138,43,226,0.2)', color: '#8A2BE2' }}>
-              Новинка
-            </span>
+            <span className="badge-trust text-xs px-2.5 py-1">✦ Новинка</span>
           )}
         </div>
 
-        {/* Discount */}
         {discount && (
-          <div className="absolute top-3 right-3">
-            <span className="text-xs font-bold px-2.5 py-1 rounded-pill bg-white shadow-sm text-cyber-blue border border-cyber-blue/20">
+          <div className="absolute top-3 right-3 z-20">
+            <span className="text-xs font-black px-2.5 py-1 rounded-pill"
+              style={{ background: 'rgba(0,255,148,0.12)', border: '1px solid rgba(0,255,148,0.4)', color: '#00FF94', textShadow: '0 0 8px rgba(0,255,148,0.5)' }}>
               −{discount}%
             </span>
           </div>
         )}
 
-        {/* Hover overlay shimmer */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ background: 'linear-gradient(135deg, rgba(42,109,244,0.04) 0%, rgba(138,43,226,0.04) 100%)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+          style={{ background: 'linear-gradient(to top, #0A0A0F, transparent)' }} />
       </div>
 
       {/* Content */}
-      <div className="p-4 space-y-3">
-        <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{product.category}</p>
+      <div className="p-4 space-y-3" style={{ background: '#0A0A0F' }}>
+        {product.sellerName && (
+          <p className="text-xs" style={{ color: 'rgba(255,45,155,0.55)' }}>
+            ● от {product.sellerName.split(' ')[0]}
+          </p>
+        )}
 
-        <h3 className="text-slate-800 font-semibold text-sm leading-snug line-clamp-2 group-hover:text-cyber-blue transition-colors duration-200">
+        <p className="text-xs font-bold uppercase tracking-widest"
+          style={{ color: `rgba(${c.r},0.75)`, textShadow: hovered ? `0 0 6px ${glow}` : 'none' }}>
+          {product.category}
+        </p>
+
+        <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-white/85 group-hover:text-white transition-colors">
           {product.name}
         </h3>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <div className="flex gap-0.5">
-            {[1, 2, 3, 4, 5].map(star => (
-              <span key={star} className={`text-xs ${star <= Math.round(product.rating) ? 'text-amber-400' : 'text-slate-200'}`}>★</span>
+            {[1,2,3,4,5].map(s => (
+              <span key={s} className={`text-xs ${s <= Math.round(product.rating) ? 'text-yellow-400' : 'text-white/10'}`}>★</span>
             ))}
           </div>
-          <span className="text-slate-500 text-xs font-medium">{product.rating}</span>
-          <span className="text-slate-300 text-xs">({product.reviews.toLocaleString('ru-RU')})</span>
+          <span className="text-white/35 text-xs font-mono">{product.rating}</span>
+          <span className="text-white/15 text-xs">({product.reviews.toLocaleString('ru-RU')})</span>
         </div>
 
-        {/* Price row */}
-        <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-50">
-          <div className="flex flex-col">
-            <span className="font-mono font-bold text-lg text-slate-800">{formatPrice(product.price)}</span>
+        <div className="flex items-center justify-between gap-2 pt-3"
+          style={{ borderTop: `1px solid rgba(${c.r},0.1)` }}>
+          <div>
+            <div className="font-mono font-black text-lg transition-all duration-300"
+              style={{
+                color: hovered ? `rgba(${c.r},1)` : '#fff',
+                textShadow: hovered ? `0 0 12px ${glow}` : 'none',
+              }}>
+              {formatPrice(product.price)}
+            </div>
             {product.oldPrice && (
-              <span className="font-mono text-xs text-slate-300 line-through">{formatPrice(product.oldPrice)}</span>
+              <div className="font-mono text-xs line-through text-white/20">{formatPrice(product.oldPrice)}</div>
             )}
           </div>
 
           <button
             onClick={handleAdd}
-            className={`relative flex-shrink-0 h-9 px-4 rounded-pill text-sm font-semibold flex items-center gap-1.5 transition-all duration-300 overflow-hidden ripple-btn ${
-              added
-                ? 'bg-green-50 text-green-600 border border-green-200'
-                : 'btn-gradient text-white shadow-md shadow-cyber-blue/20'
-            }`}
+            className="flex-shrink-0 h-9 px-4 rounded-pill text-sm font-bold flex items-center gap-1.5 transition-all duration-300 ripple-btn"
+            style={added ? {
+              background: 'rgba(0,255,148,0.12)',
+              border: '1px solid rgba(0,255,148,0.4)',
+              color: '#00FF94',
+              boxShadow: '0 0 12px rgba(0,255,148,0.3)',
+            } : {
+              background: `linear-gradient(135deg, #FF2D9B 0%, #9D4EDD 50%, #00D4FF 100%)`,
+              color: 'white',
+              boxShadow: hovered ? `0 0 20px ${glow}` : 'none',
+            }}
           >
-            {added ? (
-              <><Icon name="Check" size={14} /><span>ОК</span></>
-            ) : (
-              <><Icon name="Plus" size={14} /><span className="hidden sm:inline">В корзину</span></>
-            )}
+            {added
+              ? <><Icon name="Check" size={14} /><span>ОК!</span></>
+              : <><Icon name="Plus" size={14} /><span className="hidden sm:inline">В корзину</span></>
+            }
           </button>
         </div>
       </div>

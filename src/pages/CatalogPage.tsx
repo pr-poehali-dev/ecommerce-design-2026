@@ -71,17 +71,21 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
     <div className="space-y-6">
       {/* Categories */}
       <div>
-        <h3 className="text-white/50 text-xs font-semibold uppercase tracking-widest mb-3">Категории</h3>
+        <h3 className="text-xs font-mono font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,45,155,0.6)' }}>[ Категории ]</h3>
         <div className="space-y-1">
           {CATEGORIES.map(cat => (
             <button
               key={cat.name}
               onClick={() => setCategory(cat.name)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
-                category === cat.name
-                  ? 'btn-gradient text-white'
-                  : 'text-white/50 hover:text-white hover:bg-white/5'
-              }`}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all duration-200"
+              style={category === cat.name ? {
+                background: 'rgba(255,45,155,0.12)',
+                border: '1px solid rgba(255,45,155,0.25)',
+                color: '#FF2D9B',
+              } : {
+                color: 'rgba(255,255,255,0.45)',
+                border: '1px solid transparent',
+              }}
             >
               <span className="flex items-center gap-2">
                 <span>{cat.icon}</span>
@@ -97,26 +101,20 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
 
       {/* Price range */}
       <div>
-        <h3 className="text-white/50 text-xs font-semibold uppercase tracking-widest mb-3">Цена</h3>
+        <h3 className="text-xs font-mono font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(0,212,255,0.6)' }}>[ Цена ₽ ]</h3>
         <div className="space-y-4">
           <div className="flex gap-2">
-            <div className="flex-1 glass rounded-xl px-3 h-10 flex items-center gap-1">
-              <span className="text-white/25 text-xs">от</span>
-              <input
-                type="number"
-                value={priceRange[0]}
-                onChange={handlePriceMin}
-                className="flex-1 bg-transparent text-white text-sm outline-none font-mono min-w-0"
-              />
+            <div className="flex-1 rounded-xl px-3 h-10 flex items-center gap-1"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <span className="text-xs font-mono" style={{ color: 'rgba(255,255,255,0.2)' }}>от</span>
+              <input type="number" value={priceRange[0]} onChange={handlePriceMin}
+                className="flex-1 bg-transparent text-white text-sm outline-none font-mono min-w-0" />
             </div>
-            <div className="flex-1 glass rounded-xl px-3 h-10 flex items-center gap-1">
-              <span className="text-white/25 text-xs">до</span>
-              <input
-                type="number"
-                value={priceRange[1]}
-                onChange={handlePriceMax}
-                className="flex-1 bg-transparent text-white text-sm outline-none font-mono min-w-0"
-              />
+            <div className="flex-1 rounded-xl px-3 h-10 flex items-center gap-1"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <span className="text-xs font-mono" style={{ color: 'rgba(255,255,255,0.2)' }}>до</span>
+              <input type="number" value={priceRange[1]} onChange={handlePriceMax}
+                className="flex-1 bg-transparent text-white text-sm outline-none font-mono min-w-0" />
             </div>
           </div>
 
@@ -142,10 +140,10 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
               style={{ zIndex: 4 }}
             />
             {/* Thumbs */}
-            <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-cyber-blue bg-[#0B0E14] -translate-x-1/2 pointer-events-none"
-              style={{ left: `${pct(priceRange[0])}%` }} />
-            <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-cyber-purple bg-[#0B0E14] -translate-x-1/2 pointer-events-none"
-              style={{ left: `${pct(priceRange[1])}%` }} />
+            <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full -translate-x-1/2 pointer-events-none"
+              style={{ left: `${pct(priceRange[0])}%`, background: '#FF2D9B', border: '2px solid #050508', boxShadow: '0 0 8px rgba(255,45,155,0.7)' }} />
+            <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full -translate-x-1/2 pointer-events-none"
+              style={{ left: `${pct(priceRange[1])}%`, background: '#00D4FF', border: '2px solid #050508', boxShadow: '0 0 8px rgba(0,212,255,0.7)' }} />
           </div>
 
           <div className="flex justify-between text-xs text-white/20 font-mono">
@@ -158,7 +156,10 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
       {/* Reset */}
       <button
         onClick={() => { setCategory('Все'); setPriceRange([0, MAX_PRICE]); setSearch(''); }}
-        className="w-full h-9 glass rounded-xl text-white/40 hover:text-white text-sm transition-colors"
+        className="w-full h-9 rounded-xl text-sm font-semibold transition-all"
+        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.35)' }}
+        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,45,155,0.7)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,45,155,0.2)'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.07)'; }}
       >
         Сбросить фильтры
       </button>
@@ -166,83 +167,86 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
   );
 
   return (
-    <div className="min-h-screen pt-24 pb-24 px-4 sm:px-6 max-w-7xl mx-auto">
+    <div className="min-h-screen pt-24 pb-24 px-4 sm:px-6 max-w-7xl mx-auto" style={{ background: '#050508' }}>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-heading text-4xl sm:text-5xl text-white font-bold tracking-tight mb-2">КАТАЛОГ</h1>
-        <p className="text-white/35 text-sm">{filtered.length} товар{filtered.length === 1 ? '' : filtered.length < 5 ? 'а' : 'ов'}</p>
+        <p className="text-xs font-mono font-bold uppercase tracking-widest mb-2" style={{ color: '#9D4EDD' }}>[ КАТАЛОГ ]</p>
+        <h1 className="font-heading text-4xl sm:text-5xl text-white font-bold tracking-tight">ВСЕ ТОВАРЫ</h1>
+        <p className="text-white/30 text-sm mt-1 font-mono">{filtered.length} позиций</p>
       </div>
 
       {/* Search row */}
       <div className="flex gap-3 mb-6">
-        <div className="relative flex-1 flex items-center glass rounded-pill px-4 h-12 gap-2 focus-within:shadow-[0_0_0_2px_rgba(42,109,244,0.3)] transition-all">
-          <Icon name="Search" size={16} className="text-white/30 flex-shrink-0" />
+        <div className="relative flex-1 flex items-center rounded-pill px-4 h-12 gap-2 transition-all"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <Icon name="Search" size={16} className="text-white/25 flex-shrink-0" />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Поиск..."
-            className="flex-1 bg-transparent text-sm text-white placeholder:text-white/25 outline-none"
+            className="flex-1 bg-transparent text-sm text-white placeholder:text-white/20 outline-none"
+            onFocus={e => { (e.currentTarget.parentElement as HTMLElement).style.border = '1px solid rgba(255,45,155,0.35)'; (e.currentTarget.parentElement as HTMLElement).style.boxShadow = '0 0 0 3px rgba(255,45,155,0.08)'; }}
+            onBlur={e => { (e.currentTarget.parentElement as HTMLElement).style.border = '1px solid rgba(255,255,255,0.08)'; (e.currentTarget.parentElement as HTMLElement).style.boxShadow = 'none'; }}
           />
           {search && (
-            <button onClick={() => setSearch('')}>
-              <Icon name="X" size={14} className="text-white/30 hover:text-white" />
+            <button onClick={() => setSearch('')} style={{ color: 'rgba(255,255,255,0.3)' }}>
+              <Icon name="X" size={14} />
             </button>
           )}
         </div>
-
-        {/* Mobile filters toggle */}
-        <button
-          onClick={() => setFiltersOpen(true)}
-          className="md:hidden glass rounded-pill px-4 h-12 flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors"
-        >
+        <button onClick={() => setFiltersOpen(true)}
+          className="md:hidden rounded-pill px-4 h-12 flex items-center gap-2 text-sm font-semibold transition-all"
+          style={{ background: 'rgba(255,45,155,0.1)', border: '1px solid rgba(255,45,155,0.2)', color: '#FF2D9B' }}>
           <Icon name="SlidersHorizontal" size={16} />
           <span>Фильтры</span>
         </button>
       </div>
 
       {/* Sort tabs */}
-      <div className="flex gap-1 mb-8 overflow-x-auto pb-2 scrollbar-thin">
-        {SORT_OPTIONS.map((opt, i) => (
+      <div className="flex gap-1 mb-8 overflow-x-auto pb-2 scrollbar-neon">
+        {SORT_OPTIONS.map((opt) => (
           <button
             key={opt.value}
-            onClick={() => { setSort(opt.value); setActiveSort(i); }}
-            className={`flex-shrink-0 px-4 py-2 rounded-pill text-sm font-medium transition-all duration-200 relative ${
-              sort === opt.value ? 'text-white' : 'text-white/40 hover:text-white/70'
-            }`}
+            onClick={() => setSort(opt.value)}
+            className="flex-shrink-0 px-4 py-2 rounded-pill text-sm font-semibold transition-all duration-200 relative"
+            style={sort === opt.value ? {
+              background: 'rgba(255,45,155,0.15)',
+              border: '1px solid rgba(255,45,155,0.3)',
+              color: '#FF2D9B',
+              boxShadow: '0 0 12px rgba(255,45,155,0.2)',
+            } : {
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              color: 'rgba(255,255,255,0.4)',
+            }}
           >
-            {sort === opt.value && (
-              <div className="absolute inset-0 btn-gradient rounded-pill opacity-20" />
-            )}
-            {sort === opt.value && (
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-cyber-blue" />
-            )}
-            <span className="relative">{opt.label}</span>
+            {opt.label}
           </button>
         ))}
       </div>
 
       <div className="flex gap-6">
-        {/* Sidebar filters - desktop */}
+        {/* Sidebar filters */}
         <aside className="hidden md:block w-[280px] flex-shrink-0">
-          <div className="glass rounded-2xl p-5 sticky top-24">
+          <div className="rounded-2xl p-5 sticky top-24" style={{ background: '#0A0A0F', border: '1px solid rgba(255,255,255,0.06)' }}>
             <FilterPanel />
           </div>
         </aside>
 
-        {/* Products grid */}
+        {/* Products */}
         <div className="flex-1 min-w-0">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-24">
-              <div className="text-5xl mb-4 opacity-20">🔍</div>
-              <p className="text-white/30 text-lg">Ничего не найдено</p>
-              <p className="text-white/20 text-sm mt-2">Попробуйте изменить фильтры</p>
+              <div className="text-6xl mb-4 animate-float">🔍</div>
+              <p className="text-white/25 text-lg font-semibold">Ничего не найдено</p>
+              <p className="text-white/15 text-sm mt-2">Попробуйте изменить фильтры</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} onAddToCart={onAddToCart} onClick={onProductClick} />
               ))}
@@ -251,22 +255,23 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
         </div>
       </div>
 
-      {/* Mobile bottom sheet filters */}
+      {/* Mobile bottom sheet */}
       {filtersOpen && (
         <div className="fixed inset-0 z-[100] md:hidden">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={() => setFiltersOpen(false)} />
-          <div className="absolute bottom-0 left-0 right-0 glass-dark rounded-t-3xl p-6 animate-slide-in-up max-h-[80vh] overflow-y-auto scrollbar-thin">
+          <div className="absolute inset-0 animate-fade-in" style={{ background: 'rgba(5,5,8,0.8)', backdropFilter: 'blur(8px)' }}
+            onClick={() => setFiltersOpen(false)} />
+          <div className="absolute bottom-0 left-0 right-0 rounded-t-3xl p-6 animate-slide-in-up max-h-[80vh] overflow-y-auto scrollbar-neon"
+            style={{ background: '#0A0A0F', border: '1px solid rgba(255,45,155,0.15)', boxShadow: '0 -8px 40px rgba(255,45,155,0.1)' }}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-heading text-xl text-white font-bold">ФИЛЬТРЫ</h3>
-              <button onClick={() => setFiltersOpen(false)}>
-                <Icon name="X" size={20} className="text-white/40" />
+              <button onClick={() => setFiltersOpen(false)} style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <Icon name="X" size={20} />
               </button>
             </div>
             <FilterPanel />
-            <button
-              onClick={() => setFiltersOpen(false)}
-              className="w-full btn-gradient h-12 rounded-pill text-white font-semibold mt-6"
-            >
+            <button onClick={() => setFiltersOpen(false)}
+              className="w-full btn-gradient h-12 rounded-pill text-white font-bold mt-6 ripple-btn"
+              style={{ boxShadow: '0 0 20px rgba(255,45,155,0.3)' }}>
               Показать {filtered.length} товар{filtered.length === 1 ? '' : filtered.length < 5 ? 'а' : 'ов'}
             </button>
           </div>

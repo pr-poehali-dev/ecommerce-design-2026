@@ -100,7 +100,7 @@ export default function Index() {
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: '#F0F4FF' }}>
+    <div className="min-h-screen" style={{ background: '#050508' }}>
       <Header
         cartCount={cartCount}
         onCartOpen={() => setCartOpen(true)}
@@ -158,7 +158,8 @@ export default function Index() {
       </main>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 md:hidden z-30 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(15,23,42,0.06)]">
+      <nav className="fixed bottom-0 left-0 right-0 md:hidden z-30"
+        style={{ background: 'rgba(10,10,15,0.95)', borderTop: '1px solid rgba(255,45,155,0.15)', backdropFilter: 'blur(20px)', boxShadow: '0 -4px 30px rgba(255,45,155,0.08)' }}>
         <div className="flex">
           {NAV_ITEMS.map(item => {
             const isActive = item.id !== 'cart' && page === item.id;
@@ -169,14 +170,14 @@ export default function Index() {
                   if (item.id === 'cart') setCartOpen(true);
                   else navigate(item.id);
                 }}
-                className={`flex-1 flex flex-col items-center justify-center py-3 gap-0.5 transition-all duration-200 ${
-                  isActive ? 'text-cyber-blue' : 'text-slate-400 hover:text-slate-600'
-                }`}
+                className="flex-1 flex flex-col items-center justify-center py-3 gap-0.5 transition-all duration-200"
+                style={{ color: isActive ? '#FF2D9B' : 'rgba(255,255,255,0.3)' }}
               >
                 <div className="relative">
                   <Icon name={item.icon} size={20} />
                   {item.badge ? (
-                    <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-cyber-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">
+                    <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 text-black text-[9px] font-black rounded-full flex items-center justify-center px-0.5"
+                      style={{ background: '#FF2D9B', boxShadow: '0 0 8px rgba(255,45,155,0.8)' }}>
                       {item.badge}
                     </span>
                   ) : null}
