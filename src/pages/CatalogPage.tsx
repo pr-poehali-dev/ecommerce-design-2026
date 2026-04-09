@@ -71,21 +71,22 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
     <div className="space-y-6">
       {/* Categories */}
       <div>
-        <h3 className="text-xs font-mono font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,45,155,0.6)' }}>[ Категории ]</h3>
-        <div className="space-y-1">
+        <h3 className="text-[11px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--ink-4)' }}>Категории</h3>
+        <div className="space-y-0.5">
           {CATEGORIES.map(cat => (
             <button
               key={cat.name}
               onClick={() => setCategory(cat.name)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-all duration-200"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all duration-150"
               style={category === cat.name ? {
-                background: 'rgba(255,45,155,0.12)',
-                border: '1px solid rgba(255,45,155,0.25)',
-                color: '#FF2D9B',
+                background: 'var(--ink)',
+                color: '#fff',
               } : {
-                color: 'rgba(255,255,255,0.45)',
-                border: '1px solid transparent',
+                color: 'var(--ink-3)',
+                background: 'transparent',
               }}
+              onMouseEnter={e => { if (category !== cat.name) (e.currentTarget as HTMLButtonElement).style.background = 'var(--bg-subtle)'; }}
+              onMouseLeave={e => { if (category !== cat.name) (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
             >
               <span className="flex items-center gap-2">
                 <span>{cat.icon}</span>
@@ -101,32 +102,32 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
 
       {/* Price range */}
       <div>
-        <h3 className="text-xs font-mono font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(0,212,255,0.6)' }}>[ Цена ₽ ]</h3>
+        <h3 className="text-[11px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--ink-4)' }}>Цена ₽</h3>
         <div className="space-y-4">
           <div className="flex gap-2">
-            <div className="flex-1 rounded-xl px-3 h-10 flex items-center gap-1"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <span className="text-xs font-mono" style={{ color: 'rgba(255,255,255,0.2)' }}>от</span>
+            <div className="flex-1 rounded-xl px-3 h-9 flex items-center gap-1"
+              style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-soft)' }}>
+              <span className="text-xs" style={{ color: 'var(--ink-4)' }}>от</span>
               <input type="number" value={priceRange[0]} onChange={handlePriceMin}
-                className="flex-1 bg-transparent text-white text-sm outline-none font-mono min-w-0" />
+                className="flex-1 bg-transparent text-sm outline-none min-w-0" style={{ color: 'var(--ink)' }} />
             </div>
-            <div className="flex-1 rounded-xl px-3 h-10 flex items-center gap-1"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <span className="text-xs font-mono" style={{ color: 'rgba(255,255,255,0.2)' }}>до</span>
+            <div className="flex-1 rounded-xl px-3 h-9 flex items-center gap-1"
+              style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-soft)' }}>
+              <span className="text-xs" style={{ color: 'var(--ink-4)' }}>до</span>
               <input type="number" value={priceRange[1]} onChange={handlePriceMax}
-                className="flex-1 bg-transparent text-white text-sm outline-none font-mono min-w-0" />
+                className="flex-1 bg-transparent text-sm outline-none min-w-0" style={{ color: 'var(--ink)' }} />
             </div>
           </div>
 
           {/* Dual range slider */}
           <div className="relative h-1.5 mx-1">
-            <div className="absolute inset-0 rounded-full" style={{ background: 'rgba(255,255,255,0.1)' }} />
+            <div className="absolute inset-0 rounded-full" style={{ background: 'var(--border-soft)' }} />
             <div
               className="absolute h-full rounded-full"
               style={{
                 left: `${pct(priceRange[0])}%`,
                 right: `${100 - pct(priceRange[1])}%`,
-                background: 'var(--grad-main)',
+                background: 'var(--ink)',
               }}
             />
             <input
@@ -141,12 +142,12 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
             />
             {/* Thumbs */}
             <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full -translate-x-1/2 pointer-events-none"
-              style={{ left: `${pct(priceRange[0])}%`, background: '#FF2D9B', border: '2px solid #050508', boxShadow: '0 0 8px rgba(255,45,155,0.7)' }} />
+              style={{ left: `${pct(priceRange[0])}%`, background: 'var(--bg-white)', border: '2px solid var(--ink)', boxShadow: 'var(--shadow-sm)' }} />
             <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full -translate-x-1/2 pointer-events-none"
-              style={{ left: `${pct(priceRange[1])}%`, background: '#00D4FF', border: '2px solid #050508', boxShadow: '0 0 8px rgba(0,212,255,0.7)' }} />
+              style={{ left: `${pct(priceRange[1])}%`, background: 'var(--bg-white)', border: '2px solid var(--ink)', boxShadow: 'var(--shadow-sm)' }} />
           </div>
 
-          <div className="flex justify-between text-xs text-white/20 font-mono">
+          <div className="flex justify-between text-xs" style={{ color: 'var(--ink-4)' }}>
             <span>0 ₽</span>
             <span>{MAX_PRICE.toLocaleString('ru-RU')} ₽</span>
           </div>
@@ -156,10 +157,7 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
       {/* Reset */}
       <button
         onClick={() => { setCategory('Все'); setPriceRange([0, MAX_PRICE]); setSearch(''); }}
-        className="w-full h-9 rounded-xl text-sm font-semibold transition-all"
-        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.35)' }}
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,45,155,0.7)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,45,155,0.2)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.07)'; }}
+        className="btn-ghost w-full h-9 text-sm"
       >
         Сбросить фильтры
       </button>
@@ -167,59 +165,42 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
   );
 
   return (
-    <div className="min-h-screen pt-24 pb-24 px-4 sm:px-6 max-w-7xl mx-auto" style={{ background: '#050508' }}>
+    <div className="min-h-screen pt-24 pb-24 px-4 sm:px-6 max-w-7xl mx-auto" style={{ background: 'var(--bg)' }}>
       {/* Header */}
       <div className="mb-8">
-        <p className="text-xs font-mono font-bold uppercase tracking-widest mb-2" style={{ color: '#9D4EDD' }}>[ КАТАЛОГ ]</p>
-        <h1 className="font-heading text-4xl sm:text-5xl text-white font-bold tracking-tight">ВСЕ ТОВАРЫ</h1>
-        <p className="text-white/30 text-sm mt-1 font-mono">{filtered.length} позиций</p>
+        <h1 className="font-bold text-3xl sm:text-4xl" style={{ color: 'var(--ink)', letterSpacing: '-0.04em' }}>Каталог</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--ink-4)' }}>{filtered.length} товар{filtered.length === 1 ? '' : filtered.length < 5 ? 'а' : 'ов'}</p>
       </div>
 
       {/* Search row */}
       <div className="flex gap-3 mb-6">
-        <div className="relative flex-1 flex items-center rounded-pill px-4 h-12 gap-2 transition-all"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-          <Icon name="Search" size={16} className="text-white/25 flex-shrink-0" />
+        <div className="search-bar flex-1 flex items-center px-4 gap-2">
+          <Icon name="Search" size={15} style={{ color: 'var(--ink-4)', flexShrink: 0 }} />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Поиск..."
-            className="flex-1 bg-transparent text-sm text-white placeholder:text-white/20 outline-none"
-            onFocus={e => { (e.currentTarget.parentElement as HTMLElement).style.border = '1px solid rgba(255,45,155,0.35)'; (e.currentTarget.parentElement as HTMLElement).style.boxShadow = '0 0 0 3px rgba(255,45,155,0.08)'; }}
-            onBlur={e => { (e.currentTarget.parentElement as HTMLElement).style.border = '1px solid rgba(255,255,255,0.08)'; (e.currentTarget.parentElement as HTMLElement).style.boxShadow = 'none'; }}
+            placeholder="Поиск товаров..."
+            className="flex-1 bg-transparent text-sm outline-none"
+            style={{ color: 'var(--ink-2)', caretColor: 'var(--ink)' }}
           />
           {search && (
-            <button onClick={() => setSearch('')} style={{ color: 'rgba(255,255,255,0.3)' }}>
-              <Icon name="X" size={14} />
+            <button onClick={() => setSearch('')} style={{ color: 'var(--ink-4)', flexShrink: 0 }}>
+              <Icon name="X" size={13} />
             </button>
           )}
         </div>
         <button onClick={() => setFiltersOpen(true)}
-          className="md:hidden rounded-pill px-4 h-12 flex items-center gap-2 text-sm font-semibold transition-all"
-          style={{ background: 'rgba(255,45,155,0.1)', border: '1px solid rgba(255,45,155,0.2)', color: '#FF2D9B' }}>
-          <Icon name="SlidersHorizontal" size={16} />
+          className="md:hidden btn-ghost h-12 px-4 gap-2 text-sm">
+          <Icon name="SlidersHorizontal" size={15} />
           <span>Фильтры</span>
         </button>
       </div>
 
       {/* Sort tabs */}
-      <div className="flex gap-1 mb-8 overflow-x-auto pb-2 scrollbar-neon">
-        {SORT_OPTIONS.map((opt) => (
-          <button
-            key={opt.value}
-            onClick={() => setSort(opt.value)}
-            className="flex-shrink-0 px-4 py-2 rounded-pill text-sm font-semibold transition-all duration-200 relative"
-            style={sort === opt.value ? {
-              background: 'rgba(255,45,155,0.15)',
-              border: '1px solid rgba(255,45,155,0.3)',
-              color: '#FF2D9B',
-              boxShadow: '0 0 12px rgba(255,45,155,0.2)',
-            } : {
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.06)',
-              color: 'rgba(255,255,255,0.4)',
-            }}
-          >
+      <div className="flex gap-1.5 mb-8 overflow-x-auto pb-1 scrollbar-light">
+        {SORT_OPTIONS.map(opt => (
+          <button key={opt.value} onClick={() => setSort(opt.value)}
+            className={`cat-chip flex-shrink-0 ${sort === opt.value ? 'active' : ''}`}>
             {opt.label}
           </button>
         ))}
@@ -227,8 +208,8 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
 
       <div className="flex gap-6">
         {/* Sidebar filters */}
-        <aside className="hidden md:block w-[280px] flex-shrink-0">
-          <div className="rounded-2xl p-5 sticky top-24" style={{ background: '#0A0A0F', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <aside className="hidden md:block w-[260px] flex-shrink-0">
+          <div className="rounded-2xl p-5 sticky top-20" style={{ background: 'var(--bg-white)', border: '1px solid var(--border-soft)', boxShadow: 'var(--shadow-sm)' }}>
             <FilterPanel />
           </div>
         </aside>
@@ -236,17 +217,17 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
         {/* Products */}
         <div className="flex-1 min-w-0">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-24">
-              <div className="text-6xl mb-4 animate-float">🔍</div>
-              <p className="text-white/25 text-lg font-semibold">Ничего не найдено</p>
-              <p className="text-white/15 text-sm mt-2">Попробуйте изменить фильтры</p>
+              <div className="text-5xl mb-4 animate-float">🔍</div>
+              <p className="text-lg font-semibold" style={{ color: 'var(--ink-3)' }}>Ничего не найдено</p>
+              <p className="text-sm mt-2" style={{ color: 'var(--ink-4)' }}>Попробуйте изменить фильтры</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} onAddToCart={onAddToCart} onClick={onProductClick} />
               ))}
@@ -258,20 +239,20 @@ export default function CatalogPage({ onAddToCart, onProductClick, initialSearch
       {/* Mobile bottom sheet */}
       {filtersOpen && (
         <div className="fixed inset-0 z-[100] md:hidden">
-          <div className="absolute inset-0 animate-fade-in" style={{ background: 'rgba(5,5,8,0.8)', backdropFilter: 'blur(8px)' }}
+          <div className="absolute inset-0 animate-fade-in"
+            style={{ background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)' }}
             onClick={() => setFiltersOpen(false)} />
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-3xl p-6 animate-slide-in-up max-h-[80vh] overflow-y-auto scrollbar-neon"
-            style={{ background: '#0A0A0F', border: '1px solid rgba(255,45,155,0.15)', boxShadow: '0 -8px 40px rgba(255,45,155,0.1)' }}>
+          <div className="absolute bottom-0 left-0 right-0 rounded-t-3xl p-6 animate-slide-up max-h-[80vh] overflow-y-auto scrollbar-light"
+            style={{ background: 'var(--bg-white)', boxShadow: '0 -8px 40px rgba(0,0,0,0.08)', border: '1px solid var(--border-soft)' }}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-heading text-xl text-white font-bold">ФИЛЬТРЫ</h3>
-              <button onClick={() => setFiltersOpen(false)} style={{ color: 'rgba(255,255,255,0.4)' }}>
-                <Icon name="X" size={20} />
+              <h3 className="font-bold text-lg" style={{ color: 'var(--ink)' }}>Фильтры</h3>
+              <button onClick={() => setFiltersOpen(false)} style={{ color: 'var(--ink-4)' }}>
+                <Icon name="X" size={18} />
               </button>
             </div>
             <FilterPanel />
             <button onClick={() => setFiltersOpen(false)}
-              className="w-full btn-gradient h-12 rounded-pill text-white font-bold mt-6 ripple-btn"
-              style={{ boxShadow: '0 0 20px rgba(255,45,155,0.3)' }}>
+              className="w-full btn-primary h-11 mt-6">
               Показать {filtered.length} товар{filtered.length === 1 ? '' : filtered.length < 5 ? 'а' : 'ов'}
             </button>
           </div>

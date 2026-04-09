@@ -9,175 +9,117 @@ interface ProductCardProps {
   onClick: (product: Product) => void;
 }
 
-const NEON_COLORS = [
-  { r: '255,45,155',  label: 'pink'   },
-  { r: '0,212,255',   label: 'cyan'   },
-  { r: '157,78,221',  label: 'violet' },
-  { r: '0,255,148',   label: 'green'  },
-];
+const ICON_COLORS: Record<string, { bg: string; color: string }> = {
+  'Дизайн':        { bg: '#F5F0FF', color: '#7C3AED' },
+  'Офис':          { bg: '#EFF6FF', color: '#2563EB' },
+  'Безопасность':  { bg: '#F0FDF4', color: '#16A34A' },
+  'Системы':       { bg: '#FFF7ED', color: '#EA580C' },
+  'Продуктивность':{ bg: '#FEFCE8', color: '#CA8A04' },
+  'Медиа':         { bg: '#FDF2F8', color: '#DB2777' },
+  'ИИ':            { bg: '#F0F9FF', color: '#0284C7' },
+};
 
 export default function ProductCard({ product, index, onAddToCart, onClick }: ProductCardProps) {
   const [added, setAdded] = useState(false);
-  const [hovered, setHovered] = useState(false);
-
-  const c = NEON_COLORS[product.id % NEON_COLORS.length];
-  const border  = `rgba(${c.r}, 0.65)`;
-  const glow    = `rgba(${c.r}, 0.35)`;
-  const soft    = `rgba(${c.r}, 0.08)`;
+  const colors = ICON_COLORS[product.category] ?? { bg: '#F5F5F7', color: '#6E6E73' };
   const discount = product.oldPrice ? Math.round((1 - product.price / product.oldPrice) * 100) : null;
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
     setAdded(true);
     onAddToCart(product, e);
-    setTimeout(() => setAdded(false), 1400);
+    setTimeout(() => setAdded(false), 1300);
   };
 
   return (
     <div
       onClick={() => onClick(product)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="stagger-item rounded-2xl overflow-hidden cursor-pointer group relative"
-      style={{
-        animationDelay: `${index * 0.07}s`,
-        background: '#0A0A0F',
-        border: `1px solid ${hovered ? border : 'rgba(255,255,255,0.07)'}`,
-        boxShadow: hovered
-          ? `0 0 0 1px ${border}, 0 0 30px ${glow}, 0 0 80px rgba(${c.r},0.1), 0 24px 60px rgba(0,0,0,0.7)`
-          : '0 2px 16px rgba(0,0,0,0.4)',
-        transform: hovered ? 'translateY(-10px) scale(1.025)' : 'none',
-        transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
-      }}
+      className="product-card stagger-item"
+      style={{ animationDelay: `${index * 0.045}s` }}
     >
-      {/* Scan line */}
-      {hovered && (
-        <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden rounded-2xl">
-          <div
-            className="absolute left-0 right-0 h-px animate-scan"
-            style={{ background: `linear-gradient(90deg, transparent, ${border}, transparent)` }}
-          />
-        </div>
-      )}
-
-      {/* Icon zone */}
-      <div
-        className="relative h-48 flex items-center justify-center overflow-hidden"
-        style={{ background: `radial-gradient(ellipse at 50% 60%, ${soft} 0%, transparent 70%)` }}
-      >
-        <div className="absolute inset-0 cyber-grid-sm opacity-40" />
-
-        {/* Glow on hover */}
-        <div
-          className="absolute inset-0 transition-opacity duration-500"
-          style={{
-            opacity: hovered ? 1 : 0,
-            background: `radial-gradient(circle at 50% 50%, ${glow} 0%, transparent 65%)`,
-          }}
-        />
-
-        {/* Icon */}
-        <span
-          className="text-7xl relative z-10 select-none transition-all duration-500"
-          style={{
-            transform: hovered ? 'scale(1.25) translateY(-10px)' : 'scale(1)',
-            filter: hovered
-              ? `drop-shadow(0 0 12px ${border}) drop-shadow(0 0 28px ${glow})`
-              : 'none',
-          }}
-        >
+      {/* Icon area */}
+      <div className="relative px-5 pt-5 pb-3">
+        <div className="card-icon-wrap w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-4"
+          style={{ background: colors.bg }}>
           {product.icon}
-        </span>
+        </div>
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-20">
+        {/* Badges row */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
           {product.badge && (
-            <span className="text-xs px-2.5 py-1 rounded-pill font-bold"
-              style={{ background: soft, border: `1px solid ${border}`, color: `rgba(${c.r},1)`, textShadow: `0 0 8px ${glow}` }}>
-              {product.badge}
-            </span>
+            <span className="badge badge-dark text-[11px]">{product.badge}</span>
           )}
           {product.isNew && !product.badge && (
-            <span className="badge-trust text-xs px-2.5 py-1">✦ Новинка</span>
+            <span className="badge text-[11px]">Новинка</span>
+          )}
+          {discount && (
+            <span className="badge text-[11px]" style={{ background: '#F0FDF4', color: '#16A34A', borderColor: '#BBF7D0' }}>
+              −{discount}%
+            </span>
           )}
         </div>
 
-        {discount && (
-          <div className="absolute top-3 right-3 z-20">
-            <span className="text-xs font-black px-2.5 py-1 rounded-pill"
-              style={{ background: 'rgba(0,255,148,0.12)', border: '1px solid rgba(0,255,148,0.4)', color: '#00FF94', textShadow: '0 0 8px rgba(0,255,148,0.5)' }}>
-              −{discount}%
-            </span>
-          </div>
-        )}
-
-        <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, #0A0A0F, transparent)' }} />
-      </div>
-
-      {/* Content */}
-      <div className="p-4 space-y-3" style={{ background: '#0A0A0F' }}>
-        {product.sellerName && (
-          <p className="text-xs" style={{ color: 'rgba(255,45,155,0.55)' }}>
-            ● от {product.sellerName.split(' ')[0]}
-          </p>
-        )}
-
-        <p className="text-xs font-bold uppercase tracking-widest"
-          style={{ color: `rgba(${c.r},0.75)`, textShadow: hovered ? `0 0 6px ${glow}` : 'none' }}>
+        {/* Category */}
+        <p className="text-xs font-medium mb-1" style={{ color: 'var(--ink-4)' }}>
           {product.category}
         </p>
 
-        <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-white/85 group-hover:text-white transition-colors">
+        {/* Title */}
+        <h3 className="card-title font-semibold text-sm leading-snug mb-2 line-clamp-2 transition-colors duration-200"
+          style={{ color: 'var(--ink-2)' }}>
           {product.name}
         </h3>
 
-        <div className="flex items-center gap-2">
-          <div className="flex gap-0.5">
+        {/* Rating */}
+        <div className="flex items-center gap-1.5 mb-4">
+          <div className="flex">
             {[1,2,3,4,5].map(s => (
-              <span key={s} className={`text-xs ${s <= Math.round(product.rating) ? 'text-yellow-400' : 'text-white/10'}`}>★</span>
+              <svg key={s} width="10" height="10" viewBox="0 0 10 10" fill={s <= Math.round(product.rating) ? '#FBBF24' : '#E5E7EB'}>
+                <path d="M5 0.5l1.18 2.39 2.64.38-1.91 1.86.45 2.63L5 6.6 2.64 7.76l.45-2.63L1.18 3.27l2.64-.38L5 0.5z"/>
+              </svg>
             ))}
           </div>
-          <span className="text-white/35 text-xs font-mono">{product.rating}</span>
-          <span className="text-white/15 text-xs">({product.reviews.toLocaleString('ru-RU')})</span>
-        </div>
-
-        <div className="flex items-center justify-between gap-2 pt-3"
-          style={{ borderTop: `1px solid rgba(${c.r},0.1)` }}>
-          <div>
-            <div className="font-mono font-black text-lg transition-all duration-300"
-              style={{
-                color: hovered ? `rgba(${c.r},1)` : '#fff',
-                textShadow: hovered ? `0 0 12px ${glow}` : 'none',
-              }}>
-              {formatPrice(product.price)}
-            </div>
-            {product.oldPrice && (
-              <div className="font-mono text-xs line-through text-white/20">{formatPrice(product.oldPrice)}</div>
-            )}
-          </div>
-
-          <button
-            onClick={handleAdd}
-            className="flex-shrink-0 h-9 px-4 rounded-pill text-sm font-bold flex items-center gap-1.5 transition-all duration-300 ripple-btn"
-            style={added ? {
-              background: 'rgba(0,255,148,0.12)',
-              border: '1px solid rgba(0,255,148,0.4)',
-              color: '#00FF94',
-              boxShadow: '0 0 12px rgba(0,255,148,0.3)',
-            } : {
-              background: `linear-gradient(135deg, #FF2D9B 0%, #9D4EDD 50%, #00D4FF 100%)`,
-              color: 'white',
-              boxShadow: hovered ? `0 0 20px ${glow}` : 'none',
-            }}
-          >
-            {added
-              ? <><Icon name="Check" size={14} /><span>ОК!</span></>
-              : <><Icon name="Plus" size={14} /><span className="hidden sm:inline">В корзину</span></>
-            }
-          </button>
+          <span className="text-xs" style={{ color: 'var(--ink-4)' }}>
+            {product.rating} <span style={{ color: 'var(--ink-5)' }}>({product.reviews.toLocaleString('ru-RU')})</span>
+          </span>
         </div>
       </div>
+
+      {/* Footer */}
+      <div className="px-5 pb-5 flex items-end justify-between gap-3">
+        <div>
+          <div className="price-main">{formatPrice(product.price)}</div>
+          {product.oldPrice && (
+            <div className="price-old">{formatPrice(product.oldPrice)}</div>
+          )}
+        </div>
+
+        {/* Buy button — appears on hover */}
+        <button
+          onClick={handleAdd}
+          className="card-buy-btn btn-primary h-8 px-4 text-xs"
+          style={added ? {
+            opacity: 1, transform: 'none',
+            background: '#16A34A',
+            boxShadow: '0 2px 8px rgba(22,163,74,0.25)',
+          } : {}}
+        >
+          {added ? (
+            <><Icon name="Check" size={12} /> Добавлено</>
+          ) : (
+            <>Купить</>
+          )}
+        </button>
+      </div>
+
+      {/* Seller tag */}
+      {product.sellerName && (
+        <div className="absolute top-4 right-4">
+          <span className="badge text-[10px]" style={{ color: 'var(--ink-4)' }}>
+            {product.sellerName.split(' ')[0]}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
